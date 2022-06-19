@@ -36,22 +36,19 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   app.get('/filteredimage/', async(req, res, next) =>{
 
-    const imageUrl = req.query.image_url; 
+    const imageUrl: string = req.query.image_url; 
 
 
     if(validUrl.isUri(imageUrl)){
 
-      console.log(imageUrl);
        filterImageFromURL(imageUrl).then((filteredPath) =>{
-
-        console.log(filteredPath);
           
-        res.sendFile(filteredPath,[], function (err) {
+        res.status(200).sendFile(filteredPath,[], function (err) {
           if (err) {
-            res.send(err);
+            res.status(422).send(err);
           } else {
 
-            const files = fs.readdirSync(__dirname + "\\util\\tmp\\");
+            const files: Array<string> = fs.readdirSync(__dirname + "\\util\\tmp\\");
 
             for(var i =0; i <files.length; i++){
     
@@ -64,29 +61,14 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       });
 
        }, () => {
-         res.send('Failed to save image to path')
+         res.status(422).send('Failed to save image to path')
        });
-
-
-
-    //    var fileName = 'GeeksforGeeks.txt';
-    // res.sendFile(fileName, options, function (err) {
-    //     if (err) {
-    //         next(err);
-    //     } else {
-    //         console.log('Sent:', fileName);
-    //         next();
-    //     }
-    // });    
   
        
     } else {
-      res.send('Not a URI! Kindly enter a valid URI.');
+      res.status(422).send('Not a URI! Kindly enter a valid URI.');
     }
 
-    // const files = fs.readdirSync("src/util/tmp");
-
-    // await deleteLocalFiles(files);
 
   });
 
@@ -95,7 +77,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
-    res.send("try GET /filteredimage?image_url={{}}")
+    res.status(200).send("try GET /filteredimage?image_url={{}}")
   } );
   
 

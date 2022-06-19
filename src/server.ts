@@ -34,16 +34,16 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   /**************************************************************************** */
 
-  app.get('/filteredimage/', async(req, res, next) =>{
+  app.get('/filteredimage/', async(req:express.Request, res:express.Response, next:express.NextFunction) =>{
 
     const imageUrl: string = req.query.image_url; 
 
 
     if(validUrl.isUri(imageUrl)){
 
-       filterImageFromURL(imageUrl).then((filteredPath) =>{
+       filterImageFromURL(imageUrl).then((filteredPath:string) =>{
           
-        res.status(200).sendFile(filteredPath,[], function (err) {
+        res.status(200).sendFile(filteredPath,[], function (err:Error) {
           if (err) {
             res.status(422).send(err);
           } else {
@@ -76,7 +76,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
+  app.get( "/", async ( req:express.Request, res:express.Response ) => {
     res.status(200).send("try GET /filteredimage?image_url={{}}")
   } );
   
